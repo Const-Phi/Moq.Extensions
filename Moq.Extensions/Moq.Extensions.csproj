@@ -2,6 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <Authors>Constantin Philipchenko</Authors>
+    <Description>An extension to the Moq library that allows you to create class mocks that override non-virtual property behavior.</Description>
+    <Copyright>2021 Constantin Philipchenko</Copyright>
+    <RepositoryUrl>https://github.com/Const-Phi/Moq.Extensions</RepositoryUrl>
+    <PackageTags>unit testing; mocking; TDD; test; mock</PackageTags>
+    <PackageId>Const-Phi.Moq.Extensions</PackageId>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,6 +1,6 @@
 namespace Moq.Extensions.Tests
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     /// <summary>
     /// Non-sealed target type.
@@ -28,10 +28,10 @@ namespace Moq.Extensions.Tests
         }
     }
 
-    [TestClass]
+    [TestFixture]
     public class UserTestDataBuilderTests
     {
-        [TestMethod]
+        [Test]
         public void ComplexMockedObject_Success()
         {
             // arrange

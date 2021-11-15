@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>net461</TargetFramework>
     <Authors>Constantin Philipchenko</Authors>
     <Description>An extension to the Moq library that allows you to create class mocks that override non-virtual property behavior.</Description>
     <Copyright>2021 Constantin Philipchenko</Copyright>
@@ -10,7 +10,7 @@
     <PackageId>Const-Phi.Moq.Extensions</PackageId>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.0.2</Version>
+    <Version>1.0.0.3</Version>
   </PropertyGroup>
 
   <ItemGroup>

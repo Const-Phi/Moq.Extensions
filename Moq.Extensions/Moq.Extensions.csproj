@@ -1,15 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <Authors>Constantin Philipchenko</Authors>
     <Description>An extension to the Moq library that allows you to create class mocks that override non-virtual property behavior.</Description>
     <Copyright>2021 Constantin Philipchenko</Copyright>
     <RepositoryUrl>https://github.com/Const-Phi/Moq.Extensions</RepositoryUrl>
     <PackageTags>unit testing; mocking; TDD; test; mock</PackageTags>
     <PackageId>Const-Phi.Moq.Extensions</PackageId>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.0.0.2</Version>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include=".\..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Moq" Version="4.16.1" />

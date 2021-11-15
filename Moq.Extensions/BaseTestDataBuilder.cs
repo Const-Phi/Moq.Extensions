@@ -15,7 +15,7 @@
 
         protected TBuilder RegisterValueForProperty<TValue>(Expression<Func<TObject, TValue>> expression, TValue value)
         {
-            if ((expression.Body as MemberExpression)?.Member is not PropertyInfo targetProperty)
+            if (!((expression.Body as MemberExpression)?.Member is PropertyInfo targetProperty))
             {
                 throw new ArgumentOutOfRangeException(nameof(expression), "Expression don't extract property of target type.");
             }

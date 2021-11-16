@@ -49,7 +49,7 @@ public sealed class UserTestDataBuilder : EntityTestDataBuilder<User, UserTestDa
 ```cs
 using NUnit.Framework;
 
-[TestFeature]
+[TestFixture]
 public class UserTestDataBuilderTests
 {
     [Test]
@@ -73,3 +73,5 @@ public class UserTestDataBuilderTests
     }
 }
 ```
+
+В данный момент проводятся исследования с целью исключения данного ограничения.

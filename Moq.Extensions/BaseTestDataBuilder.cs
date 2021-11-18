@@ -17,7 +17,7 @@
         {
             if (!((expression.Body as MemberExpression)?.Member is PropertyInfo targetProperty))
             {
-                throw new ArgumentOutOfRangeException(nameof(expression), "Expression don't extract property of target type.");
+                throw new ArgumentOutOfRangeException(nameof(expression), "Expression doesn't extract property of target type.");
             }
 
             var result = Expression.Equal(
@@ -29,16 +29,23 @@
 
         protected TBuilder UpdateSetup(BinaryExpression expression)
         {
-            this.setup = this.setup == null
+            this.setup = this.IsDefaultSetup()
                 ? expression
                 : Expression.AndAlso(this.setup, expression);
 
             return (TBuilder)this;
         }
 
+        protected bool IsDefaultSetup()
+        {
+            return this.setup is null;
+        }
+
         public TObject Build()
         {
-            return Mock.Of(Expression.Lambda<Func<TObject, bool>>(this.setup, this.target));
+            return this.IsDefaultSetup()
+                ? Mock.Of<TObject>()
+                : Mock.Of<TObject>(Expression.Lambda<Func<TObject, bool>>(this.setup, this.target));
         }
     }
 }

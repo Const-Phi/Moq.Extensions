@@ -27,6 +27,11 @@
             return this.UpdateSetup(result);
         }
 
+        protected TBuilder RegisterFlag(Expression<Func<TObject, bool>> expression)
+        {
+            return this.RegisterValueForProperty(expression, true);
+        }
+
         protected TBuilder UpdateSetup(BinaryExpression expression)
         {
             this.setup = this.IsDefaultSetup()

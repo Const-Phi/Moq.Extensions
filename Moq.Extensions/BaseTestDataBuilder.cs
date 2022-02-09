@@ -20,9 +20,24 @@
                 throw new ArgumentOutOfRangeException(nameof(expression), "Expression doesn't extract property of target type.");
             }
 
-            var result = Expression.Equal(
-                Expression.Property(this.target, targetProperty),
-                Expression.Constant(value));
+            BinaryExpression result;
+
+            if (targetProperty.PropertyType == value.GetType())
+            {
+                result = Expression.Equal(
+                    Expression.Property(this.target, targetProperty),
+                    Expression.Constant(value));
+            }
+            else if (IsNullableWrapper(targetProperty, value))
+            {
+                result = Expression.Equal(
+                    Expression.Property(this.target, targetProperty),
+                    Expression.Convert(Expression.Constant(value), targetProperty.PropertyType));
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
 
             return this.UpdateSetup(result);
         }
@@ -44,6 +59,15 @@
         protected bool IsDefaultSetup()
         {
             return this.setup is null;
+        }
+
+        protected bool IsNullableWrapper<TValue>(PropertyInfo targetProperty, TValue value)
+        {
+            var targetPropertyType = targetProperty.PropertyType;
+
+            return targetPropertyType.IsGenericType
+                && targetPropertyType.GetGenericTypeDefinition() == typeof(Nullable<>)
+                && Nullable.GetUnderlyingType(targetPropertyType) == value.GetType();
         }
 
         public TObject Build()

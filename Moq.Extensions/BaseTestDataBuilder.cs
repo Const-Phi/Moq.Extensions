@@ -1,6 +1,7 @@
 ﻿namespace Moq.Extensions
 {
     using System;
+    using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
     using Moq;
@@ -28,7 +29,7 @@
                     Expression.Property(this.target, targetProperty),
                     Expression.Constant(value));
             }
-            else if (IsNullableWrapper(targetProperty, value))
+            else if (IsNullableWrapper(targetProperty, value) || IsHeir(targetProperty, value))
             {
                 result = Expression.Equal(
                     Expression.Property(this.target, targetProperty),
@@ -68,6 +69,18 @@
             return targetPropertyType.IsGenericType
                 && targetPropertyType.GetGenericTypeDefinition() == typeof(Nullable<>)
                 && Nullable.GetUnderlyingType(targetPropertyType) == value.GetType();
+        }
+
+        protected bool IsHeir<TValue>(PropertyInfo targetProperty, TValue value)
+        {
+            return targetProperty.PropertyType.IsAssignableFrom(value.GetType());
+        }
+
+        protected bool IsImplementer<TValue>(PropertyInfo targetProperty, TValue value)
+        {
+            var targetPropertyType = targetProperty.PropertyType;
+
+            return targetPropertyType.IsInterface && value.GetType().GetInterfaces().Contains(targetPropertyType);
         }
 
         public TObject Build()

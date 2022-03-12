@@ -1,5 +1,6 @@
 namespace Moq.Extensions.Tests
 {
+    using System.Collections.Generic;
     using NUnit.Framework;
 
     /// <summary>
@@ -12,7 +13,21 @@ namespace Moq.Extensions.Tests
         public string FirstName { get; set; }
 
         public int? NullableValue { get; set; }
+
+        public Tag Tag { get; set; }
+
+        public IList<Tag> Tags { get; set; }
     }
+
+    public class Tag
+    {
+        public virtual string Value { get; set; }
+    }
+
+    public class ProxyTag : Tag
+    {
+    }
+
 
     /// <summary>
     /// Target type test data builder.
@@ -32,6 +47,16 @@ namespace Moq.Extensions.Tests
         public UserTestDataBuilder WithNullableValue(int value)
         {
             return this.RegisterValueForProperty(x => x.NullableValue, value);
+        }
+
+        public UserTestDataBuilder WithTag(Tag tag)
+        {
+            return this.RegisterValueForProperty(x => x.Tag, tag);
+        }
+
+        public UserTestDataBuilder WithTags(List<Tag> tags)
+        {
+            return this.RegisterValueForProperty(x => x.Tags, tags);
         }
     }
 
@@ -62,24 +87,53 @@ namespace Moq.Extensions.Tests
         public void ComplexMockedObject_Nullable_Success()
         {
             // arrange
-            const string targetLastName = "LastName";
-
-            const string targetFirstName = "FirstName";
-
             const int targetValue = 42;
 
             // act
             var user = new UserTestDataBuilder()
-                .WithLastName(targetLastName)
-                .WithFirstName(targetFirstName)
                 .WithNullableValue(targetValue)
                 .Build();
 
             // assert
             Assert.IsNotNull(user);
-            Assert.AreEqual(targetLastName, user.LastName);
-            Assert.AreEqual(targetFirstName, user.FirstName);
             Assert.AreEqual(targetValue, user.NullableValue);
+        }
+
+        [Test]
+        public void ComplexMockedObject_Inheritance_Success()
+        {
+            // arrange
+            var targetValue = "target value";
+
+            var proxyTag = new ProxyTag { Value = targetValue };
+
+            // act
+            var user = new UserTestDataBuilder()
+                .WithTag(proxyTag)
+                .Build();
+
+            // assert
+            Assert.IsNotNull(user);
+            Assert.IsNotNull(user.Tag);
+            Assert.AreEqual(targetValue, user.Tag.Value);
+        }
+
+        [Test]
+        public void ComplexMockedObject_Interface_Success()
+        {
+            // arrange
+            var targetValue = "target value";
+
+            var tags = new List<Tag> { new Tag { Value = targetValue } };
+
+            // act
+            var user = new UserTestDataBuilder()
+                .WithTags(tags)
+                .Build();
+
+            // assert
+            Assert.IsNotNull(user);
+            CollectionAssert.AreEqual(user.Tags, tags);
         }
     }
 }

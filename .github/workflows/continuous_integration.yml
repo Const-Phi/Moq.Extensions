@@ -26,10 +26,15 @@ jobs:
       uses: microsoft/setup-msbuild@v1.1
 
     - name: Setup Nuget
-      uses: Nuget/setup-nuget@v1.0.5
+      uses: nuget/setup-nuget@v1
+      with:
+        nuget-version: '5.x'
 
     - name: Restore nuget packages
-      run: nuget restore Moq.Extensions/Moq.Extensions.csproj
+      run: nuget restore Moq.Extensions.sln
 
     - name: Build app for release
-      run: msbuild Moq.Extensions\Moq.Extensions.csproj -t:rebuild -verbosity:diag -property:Configuration=Release
+      run: msbuild Moq.Extensions.sln -t:rebuild -verbosity:diag -property:Configuration=Release
+
+    - name: Test
+      run: dotnet test Moq.Extensions.sln --no-build --configuration Release

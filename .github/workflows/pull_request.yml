@@ -1,0 +1,36 @@
+name: Continuous Integration (PR)
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+
+      - name: Setup Nuget
+        uses: nuget/setup-nuget@v1
+          #with:
+          #  nuget-version: '5.x'
+
+      - name: Restore nuget packages
+        run: nuget restore Moq.Extensions.sln
+        
+      - name: Build
+        run: dotnet build Moq.Extensions.sln --configuration Release
+          #run: msbuild Moq.Extensions.sln -t:rebuild -verbosity:diag -property:Configuration=Release
+
+      - name: Test
+        run: dotnet test Moq.Extensions.sln --no-build --configuration Release

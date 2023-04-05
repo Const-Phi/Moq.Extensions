@@ -29,7 +29,6 @@ jobs:
 
       - name: Build
         run: dotnet build ${{ vars.SOLUTION_NAME }} --configuration Release
-          #run: msbuild ${{ vars.SOLUTION_NAME }} -t:rebuild -verbosity:diag -property:Configuration=Release
 
       - name: Test
         run: dotnet test ${{ vars.SOLUTION_NAME }} --no-build --configuration Release

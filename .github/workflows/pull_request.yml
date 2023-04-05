@@ -27,7 +27,7 @@ jobs:
 
       - name: Restore nuget packages
         run: nuget restore Moq.Extensions.sln
-        
+
       - name: Build
         run: dotnet build Moq.Extensions.sln --configuration Release
           #run: msbuild Moq.Extensions.sln -t:rebuild -verbosity:diag -property:Configuration=Release

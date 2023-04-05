@@ -24,13 +24,20 @@ jobs:
     - name: Setup Nuget
       uses: nuget/setup-nuget@v1
       with:
-        nuget-version: '5.x'
+        nuget-version: '>=5.1'
 
     - name: Restore nuget packages
       run: nuget restore Moq.Extensions.sln
 
-    - name: Build app for release
-      run: msbuild Moq.Extensions.sln -t:rebuild -verbosity:diag -property:Configuration=Release
+      - name: Build
+        run: dotnet build Moq.Extensions.sln --configuration Release
+          #run: msbuild Moq.Extensions.sln -t:rebuild -verbosity:diag -property:Configuration=Release
 
-    - name: Test
-      run: dotnet test Moq.Extensions.sln --no-build --configuration Release
+      - name: Test
+        run: dotnet test Moq.Extensions.sln --no-build --configuration Release
+
+      - name: Pack
+        run: dotnet pack Moq.Extensions.sln --configuration Release
+
+      - name: Publish
+        run: dotnet nuget push **/*.nupkg --api-key ${{secrets.CONST_PHI_NUGET_AUTH_TOKEN}} --source https://api.nuget.org/v3/index.json -SkipDuplicate

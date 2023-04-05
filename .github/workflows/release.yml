@@ -1,0 +1,40 @@
+name: Continuous Integration (release)
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-windows:
+
+    name: Windows Build
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+
+      - name: Setup Nuget
+        uses: nuget/setup-nuget@v1
+        with:
+          nuget-api-key: ${{ secrets.CONST_PHI_NUGET_AUTH_TOKEN }}
+          nuget-version: '5.1'
+
+      - name: Restore nuget packages
+        run: nuget restore ${{ vars.SOLUTION_NAME }}
+
+      - name: Build
+        run: dotnet build ${{ vars.SOLUTION_NAME }} --configuration Release
+
+      - name: Test
+        run: dotnet test ${{ vars.SOLUTION_NAME }} --no-build --configuration Release
+
+      - name: Pack
+        run: dotnet pack ${{ vars.SOLUTION_NAME }} --configuration Release
+
+      - name: Publish
+        run: dotnet nuget push **/*.nupkg --source https://api.nuget.org/v3/index.json -SkipDuplicate

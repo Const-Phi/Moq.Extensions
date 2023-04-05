@@ -22,15 +22,13 @@ jobs:
 
       - name: Setup Nuget
         uses: nuget/setup-nuget@v1
-          #with:
-          #  nuget-version: '5.x'
 
       - name: Restore nuget packages
-        run: nuget restore Moq.Extensions.sln
+        run: nuget restore ${{ vars.SOLUTION_NAME }}
 
       - name: Build
-        run: dotnet build Moq.Extensions.sln --configuration Release
-          #run: msbuild Moq.Extensions.sln -t:rebuild -verbosity:diag -property:Configuration=Release
+        run: dotnet build ${{ vars.SOLUTION_NAME }} --configuration Release
+          #run: msbuild ${{ vars.SOLUTION_NAME }} -t:rebuild -verbosity:diag -property:Configuration=Release
 
       - name: Test
-        run: dotnet test Moq.Extensions.sln --no-build --configuration Release
+        run: dotnet test ${{ vars.SOLUTION_NAME }} --no-build --configuration Release

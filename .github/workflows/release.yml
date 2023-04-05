@@ -18,26 +18,24 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
 
-      - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v1.1
-
       - name: Setup Nuget
         uses: nuget/setup-nuget@v1
         with:
+          nuget-api-key: ${{ secrets.CONST_PHI_NUGET_AUTH_TOKEN }}
           nuget-version: '5.1'
 
       - name: Restore nuget packages
-        run: nuget restore Moq.Extensions.sln
+        run: nuget restore ${{ vars.SOLUTION_NAME }}
 
       - name: Build
-        run: dotnet build Moq.Extensions.sln --configuration Release
-          #run: msbuild Moq.Extensions.sln -t:rebuild -verbosity:diag -property:Configuration=Release
+        run: dotnet build ${{ vars.SOLUTION_NAME }} --configuration Release
+          #run: msbuild ${{ vars.SOLUTION_NAME }} -t:rebuild -verbosity:diag -property:Configuration=Release
 
       - name: Test
-        run: dotnet test Moq.Extensions.sln --no-build --configuration Release
+        run: dotnet test ${{ vars.SOLUTION_NAME }} --no-build --configuration Release
 
       - name: Pack
-        run: dotnet pack Moq.Extensions.sln --configuration Release
+        run: dotnet pack ${{ vars.SOLUTION_NAME }} --configuration Release
 
       - name: Publish
-        run: dotnet nuget push **/*.nupkg --api-key ${{secrets.CONST_PHI_NUGET_AUTH_TOKEN}} --source https://api.nuget.org/v3/index.json -SkipDuplicate
+        run: dotnet nuget push **/*.nupkg --source https://api.nuget.org/v3/index.json -SkipDuplicate

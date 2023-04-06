@@ -37,4 +37,4 @@ jobs:
         run: dotnet pack ${{ vars.SOLUTION_NAME }} --configuration Release
 
       - name: Publish
-        run: dotnet nuget push **/*.nupkg --source https://api.nuget.org/v3/index.json -SkipDuplicate
+        run: dotnet nuget push **/*.nupkg --source https://api.nuget.org/v3/index.json --skip-duplicate

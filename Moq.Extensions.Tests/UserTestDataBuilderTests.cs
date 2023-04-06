@@ -32,7 +32,7 @@ namespace Moq.Extensions.Tests
     /// <summary>
     /// Target type test data builder.
     /// </summary>
-    public class UserTestDataBuilder : BaseTestDataBuilder<User, UserTestDataBuilder>
+    public sealed class UserTestDataBuilder : BaseTestDataBuilder<User, UserTestDataBuilder>
     {
         public UserTestDataBuilder WithLastName(string lastName)
         {
@@ -61,7 +61,7 @@ namespace Moq.Extensions.Tests
     }
 
     [TestFixture]
-    public class UserTestDataBuilderTests
+    public sealed class UserTestDataBuilderTests
     {
         [Test]
         public void ComplexMockedObject_Success()
